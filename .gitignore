@@ -2,3 +2,5 @@ logs
 sif_images
 
 sbatch_run.sh
+*.zip
+*.pth
