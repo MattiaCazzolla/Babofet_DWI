@@ -9,10 +9,13 @@ from pathlib import Path
 #      HARDCODED NNUNET PATHS
 # ==========================================
 # Modify these if your directory structure changes
-NNUNET_BASE = "../tools/nnunet"
+SCRIPT_DIR = Path(__file__).resolve().parent
+PROJECT_ROOT = SCRIPT_DIR.parent
+NNUNET_BASE = str(PROJECT_ROOT / "tools" / "nnunet")
+
 NNUNET_RAW = f"{NNUNET_BASE}/nnUNet_raw"
 NNUNET_PREPROCESSED = f"{NNUNET_BASE}/nnUNet_preprocessed"
-NNUNET_RESULTS = NNUNET_BASE  # Your tree shows the dataset folder is directly inside the 'nnunet' folder
+NNUNET_RESULTS = NNUNET_BASE
 # ==========================================
 
 def get_file_extension(filename):

@@ -20,7 +20,15 @@ source config/config.sh
 detected_stacks=( $(ls "${SESSION_RAW_DATA_DIR}"/${SUBJECT_ID}_${SESSION_ID}_*run-*_dwi.nii.gz 2>/dev/null | sort) )
 
 # select the reference stack
-REFERENCE_STACK=$(python3 scripts/select_reference_stack.py "$SUBJECT_ID" "$SESSION_ID")
+MASK_DIR="${DERIVATIVES_DIR}/svrtk/${SUBJECT_ID}/${SESSION_ID}/dwi"
+
+REFERENCE_STACK=$(python3 scripts/select_reference_stack.py \
+    --subject "$SUBJECT_ID" \
+    --session "$SESSION_ID" \
+    --output-dir "$OUTPUT_DIR" \
+    --mask-dir "$MASK_DIR" \
+    --use-mask)
+
 REF_STACK_FILE="${OUTPUT_DIR}/reference_stack.txt"
 
 echo "Reference stack is: $REFERENCE_STACK"

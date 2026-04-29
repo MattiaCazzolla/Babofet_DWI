@@ -18,7 +18,7 @@ REF_STACK_FILE="${OUTPUT_DIR}/reference_stack.txt"
 REFERENCE_STACK=$(cat "$REF_STACK_FILE")
 
 TEMPLATE_IMG="$OUTPUT_DIR/${REFERENCE_STACK}_final_b0.nii.gz"
-MASK_IMG="$OUTPUT_DIR/${REFERENCE_STACK}_dilated_brain_mask.nii.gz"
+MASK_IMG="$OUTPUT_DIR/${REFERENCE_STACK}_brain_mask_eddycorr_dilated.nii.gz"
 
 session_basename="${SUBJECT_ID}_${SESSION_ID}_dir-AP"
 OUTPUT_SVR_B0="$OUTPUT_DIR/${session_basename}_b0_SVR.nii.gz"
