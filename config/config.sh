@@ -19,11 +19,11 @@ SVR_DWI_BVAL="1000"          # The b-value shell to reconstruct
 
 
 # --------- SOFTWARE ---------
-mirtk_path=/envau/work/meca/users/cazzolla.m/baboons/Babofet_DWI/sif_images/mirtk.sif
-svrtk_path=/envau/work/meca/users/cazzolla.m/baboons/Babofet_DWI/sif_images/svrtk.sif
+export mirtk_path="$PWD/sif_images/mirtk.sif"
+export svrtk_path="$PWD/sif_images/svrtk.sif"
 
 C3D_TOOL_PATH=/envau/work/meca/users/cazzolla.m/baboons/Babofet_DWI/tools/c3d_affine_tool
 
 # --------- Other Parameters ---------
 NTHR=64
-
+export ACTIVATE_ENV="eval \"\$(conda shell.bash hook)\" && conda activate babofet_env"

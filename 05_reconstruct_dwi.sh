@@ -20,7 +20,7 @@ REFERENCE_STACK=$(cat "$REF_STACK_FILE")
 
 # --- Input Files ---
 DOF_REF_TO_T2="${OUTPUT_DIR}/${REFERENCE_STACK}_to_T2.dof"
-REF_STACK_MASK="${OUTPUT_DIR}/${REFERENCE_STACK}_dilated_brain_mask.nii.gz"
+REF_STACK_MASK="${OUTPUT_DIR}/${REFERENCE_STACK}_brain_mask_eddycorr_dilated.nii.gz"
 
 # --- Output Files ---
 OUTPUT_DWI_PATH="${OUTPUT_DIR}/${SESSION_BASENAME}_DWI_SVR_in_T2_space.nii.gz"
@@ -142,8 +142,8 @@ singularity run \
     "${SVR_DWI_BVAL}" \
     "/t2_ref/${T2_NAME}" \
     "/shared/$(realpath --relative-to="${OUTPUT_DIR}" "${DOF_REF_TO_T2}")" \
-    -dofin "${SINGULARITY_DOF_ARGS[@]}" \
     -mask "/shared/$(realpath --relative-to="${OUTPUT_DIR}" "${PADDED_TEMPLATE_MASK}")" \
+    -dofin "${SINGULARITY_DOF_ARGS[@]}" \
     -template "${REFERENCE_STACK_INDEX}" \
     -resolution "${SVR_DWI_RESOLUTION}" \
     -iterations "${SVR_DWI_ITERATIONS}" \
@@ -160,6 +160,6 @@ echo
 echo "--- DWI Reconstruction complete! ---"
 echo "High-resolution DWI signal saved to: ${OUTPUT_DWI_PATH}"
 
-cp "${OUTPUT_DIR}/shCoeff9.nii.gz" "${DERIVATIVES_OUTPUT_DIR_SVRTK}/${SESSION_BASENAME}_rec-svrtk_SH_dwi.nii.gz"
+cp "${OUTPUT_DIR}/shCoeff9.nii.gz" "${DERIVATIVES_OUTPUT_DIR_SVRTK}/${SESSION_BASENAME}_rec-svrtk_SH.nii.gz"
 
 rm "${OUTPUT_DIR}"/{corrected,orig,simulated,stack}*.nii.gz

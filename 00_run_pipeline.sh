@@ -7,12 +7,17 @@ set -e -u -o pipefail # Fail on error, undefined variable, or pipe failure
 
 # --- USER CONFIGURATION ---
 
-module purge
-module load all
-module load ANTS/0.2.6.4
-module load mrtrix/3.0.8
-module load singularity
-module load FSL/0.6.0.7.18
+if [ -f "config/env_setup.sh" ]; then
+    source "config/env_setup.sh"
+fi
+
+# Check if required tools are in PATH
+for cmd in mrconvert fslmaths antsRegistration singularity; do
+    if ! command -v $cmd &> /dev/null; then
+        echo "Error: $cmd could not be found. Please ensure FSL, MRtrix, ANTs, and Singularity are installed and loaded."
+        exit 1
+    fi
+done
 
 
 if [ "$#" -ne 2 ]; then
@@ -30,7 +35,7 @@ export SESSION_BASENAME_NODIR="${SUBJECT_ID}_${SESSION_ID}"
 export SESSION_RAW_DATA_DIR="${RAWDATA_DIR}/${SUBJECT_ID}/${SESSION_ID}/dwi"
 export SESSION_FMAP_DATA_DIR="${RAWDATA_DIR}/${SUBJECT_ID}/${SESSION_ID}/fmap"
 export T2W_RECONSTRUCTED="${DERIVATIVES_DIR}/niftymic/${SUBJECT_ID}/${SESSION_ID}/anat/${SUBJECT_ID}_${SESSION_ID}_rec-niftymic_desc-brain_T2w.nii.gz"
-export T2W_RECONSTRUCTED_MASK="${DERIVATIVES_DIR}/niftymic/${SUBJECT_ID}/${SESSION_ID}/anat/${SUBJECT_ID}_${SESSION_ID}_rec-niftymic_desc-brain_T2w_mask.nii.gz"
+export T2W_RECONSTRUCTED_MASK="${DERIVATIVES_DIR}/niftymic/${SUBJECT_ID}/${SESSION_ID}/anat/${SUBJECT_ID}_${SESSION_ID}_rec-niftymic_desc-brain_mask.nii.gz"
 
 export OUTPUT_DIR=${OUTPUT_TMP_DIR}/${SUBJECT_ID}/${SESSION_ID}
 export DERIVATIVES_OUTPUT_DIR_SVRTK="${DERIVATIVES_DIR}/svrtk/${SUBJECT_ID}/${SESSION_ID}/dwi"
@@ -61,6 +66,11 @@ echo "-----------------------------------------"
 #echo "✅ STEP 1 complete."
 #echo "-----------------------------------------"
 
+#echo "STEP 1a: Extracting brain mask..."
+#bash ./01a_brain_extraction.sh
+#echo "✅ STEP 1a complete."
+#echo "-----------------------------------------"
+
 #echo "STEP 2: Registering stacks to reference..."
 #bash ./02_register_stacks.sh
 #echo "✅ STEP 2 complete."
@@ -81,15 +91,15 @@ echo "-----------------------------------------"
 #echo "✅ STEP 4 complete."
 #echo "-----------------------------------------"
 
-#echo "STEP 5: Reconstructing high-resolution DWI signal..."
-#bash ./05_reconstruct_dwi.sh
-#echo "✅ STEP 5 complete."
-#echo "-----------------------------------------"
-
-echo "STEP 6: Fitting tensor and FOD..."
-bash ./06_fit_tensor.sh
-echo "✅ STEP 6 complete."
+echo "STEP 5: Reconstructing high-resolution DWI signal..."
+bash ./05_reconstruct_dwi.sh
+echo "✅ STEP 5 complete."
 echo "-----------------------------------------"
+
+#echo "STEP 6: Fitting tensor and FOD..."
+#bash ./06_fit_tensor.sh
+#echo "✅ STEP 6 complete."
+#echo "-----------------------------------------"
 
 #echo "STEP 8: Propagating masks..."
 #bash ./08_mask_propagation.sh

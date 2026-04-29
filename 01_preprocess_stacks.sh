@@ -15,7 +15,7 @@ source config/config.sh
 
 detected_stacks=( $(ls "${SESSION_RAW_DATA_DIR}"/${SUBJECT_ID}_${SESSION_ID}_*run-*_dwi.nii.gz 2>/dev/null | sort) )
 
-skip_stacks=() 
+skip_stacks=("sub-Aziza_ses-01_dir-AP_run-02" sub-Aziza_ses-01_dir-AP_run-01) 
 
 for file_path in "${detected_stacks[@]}"; do
 
@@ -93,10 +93,15 @@ for file_path in "${detected_stacks[@]}"; do
         echo "Using existing brain mask: $BRAIN_MASK"
     else
         echo "No brain mask found for ${basename}. Generating with nnU-Net..."
+
+        eval "$ACTIVATE_ENV"
+
         python3 scripts/nnunet_brainmask.py \
             -i "$OUTPUT_DIR/${basename}_b0_denoised.nii.gz" \
             -o "$BRAIN_MASK" \
             --device "cpu"
+            
+        eval "$ACTIVATE_ENV"
     fi
 
 
@@ -204,7 +209,7 @@ for file_path in "${detected_stacks[@]}"; do
                 --imain=\"$OUTPUT_DIR/${basename}_biascorr.nii.gz\" \
                 --mask=\"$DILATED2_BRAIN_MASK\" \
                 --index=\"$OUTPUT_DIR/${basename}_eddy_index.txt\" \
-                --acqp=\"$OUTPUT_DIR/${basename}_eddy_acqp.txt\" \
+                --acqp=\"$OUTPUT_DIR/${basename}_topup_acqp.txt\" \
                 --bvecs=\"$RAW_BVEC\" \
                 --bvals=\"$RAW_BVAL\" \
                 --json=\"$RAW_JSON\" \
@@ -370,9 +375,6 @@ for file_path in "${detected_stacks[@]}"; do
     # extract b0
     dwiextract "$OUTPUT_DIR/${basename}_dwi_final.mif" -bzero - | mrmath - mean -axis 3 "$OUTPUT_DIR/${basename}_final_b0.nii.gz" -force
     dwiextract "$OUTPUT_DIR/${basename}_dwi_final.mif" -no_bzero - | mrmath - mean -axis 3 "$OUTPUT_DIR/${basename}_final_b1000.nii.gz" -force 
-
-    fslmaths "$OUTPUT_DIR/${basename}_final_b0.nii.gz" -mul "${DILATED_BRAIN_MASK}" "$OUTPUT_DIR/${basename}_final_b0_masked.nii.gz"
-    fslmaths "$OUTPUT_DIR/${basename}_final_b1000.nii.gz" -mul "${DILATED_BRAIN_MASK}" "$OUTPUT_DIR/${basename}_final_b1000_masked.nii.gz"
 
     echo "✅ Finished preprocessing: ${basename}"
 
