@@ -15,7 +15,7 @@ source config/config.sh
 
 detected_stacks=( $(ls "${SESSION_RAW_DATA_DIR}"/${SUBJECT_ID}_${SESSION_ID}_*run-*_dwi.nii.gz 2>/dev/null | sort) )
 
-skip_stacks=("sub-Aziza_ses-01_dir-AP_run-02" sub-Aziza_ses-01_dir-AP_run-01) 
+skip_stacks=("sub-Aziza_ses-01_dir-AP_run-02" "sub-Aziza_ses-01_dir-AP_run-01" "sub-Aziza_ses-01_dir-AP_run-03" "sub-Aziza_ses-01_dir-AP_run-04" "sub-Aziza_ses-01_dir-AP_run-05") 
 
 for file_path in "${detected_stacks[@]}"; do
 

@@ -35,6 +35,7 @@ export SESSION_BASENAME_NODIR="${SUBJECT_ID}_${SESSION_ID}"
 export SESSION_RAW_DATA_DIR="${RAWDATA_DIR}/${SUBJECT_ID}/${SESSION_ID}/dwi"
 export SESSION_FMAP_DATA_DIR="${RAWDATA_DIR}/${SUBJECT_ID}/${SESSION_ID}/fmap"
 export T2W_RECONSTRUCTED="${DERIVATIVES_DIR}/niftymic/${SUBJECT_ID}/${SESSION_ID}/anat/${SUBJECT_ID}_${SESSION_ID}_rec-niftymic_desc-brain_T2w.nii.gz"
+export T2W_RECONSTRUCTED_BG="${DERIVATIVES_DIR}/niftymic/${SUBJECT_ID}/${SESSION_ID}/anat/${SUBJECT_ID}_${SESSION_ID}_rec-niftymic_desc-brainbg_T2w.nii.gz"
 export T2W_RECONSTRUCTED_MASK="${DERIVATIVES_DIR}/niftymic/${SUBJECT_ID}/${SESSION_ID}/anat/${SUBJECT_ID}_${SESSION_ID}_rec-niftymic_desc-brain_mask.nii.gz"
 
 export OUTPUT_DIR=${OUTPUT_TMP_DIR}/${SUBJECT_ID}/${SESSION_ID}
@@ -86,10 +87,10 @@ echo "-----------------------------------------"
 #echo "✅ STEP 3b complete."
 #echo "-----------------------------------------"
 
-#echo "STEP 4: Aligning reconstructed volumes to T2 template..."
-#bash ./04_align_to_t2.sh
-#echo "✅ STEP 4 complete."
-#echo "-----------------------------------------"
+echo "STEP 4: Aligning reconstructed volumes to T2 template..."
+bash ./04_align_to_t2.sh
+echo "✅ STEP 4 complete."
+echo "-----------------------------------------"
 
 echo "STEP 5: Reconstructing high-resolution DWI signal..."
 bash ./05_reconstruct_dwi.sh

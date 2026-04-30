@@ -27,6 +27,14 @@ REF_STACK_IMG="${OUTPUT_DIR}/${REFERENCE_STACK}_final_b0_masked.nii.gz"
 T2_DIR=$(dirname "${T2W_RECONSTRUCTED}")
 T2_NAME=$(basename "${T2W_RECONSTRUCTED}")
 
+# check if T2 without background exists, if not bet the T2 with bg and save it
+if [[ ! -f "${T2W_RECONSTRUCTED}" ]]; then
+    echo "T2 template without background not found. Extracting brain from T2 with background..."
+    fslmaths "${T2W_RECONSTRUCTED_BG}" -mul "${T2W_RECONSTRUCTED_MASK}" "${T2W_RECONSTRUCTED}"
+else
+    echo "T2 template without background already exists. Skipping brain extraction."
+fi
+
 echo "--- Aligning all data to T2 template space ---"
 
 # --- Step 1: Register SVR b0 to T2 Template ---
