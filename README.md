@@ -17,7 +17,7 @@ Before installing the Python dependencies, ensure you have the following neuroim
 * [FSL](https://fsl.fmrib.ox.ac.uk/fsl/fslwiki/FslInstallation) (v6.0+)
 * [MRtrix3](https://www.mrtrix.org/download/) (v3.0.8+)
 * [ANTs](https://github.com/ANTsX/ANTs) (v2.3+)
-* [Singularity / Apptainer](https://apptainer.org/docs/user/main/quick_start.html) (for SVR tools)
+* [Singularity](https://docs.sylabs.io/guides/2.6/user-guide/installation.html) (for SVR tools)
 
 ---
 
@@ -25,7 +25,7 @@ Before installing the Python dependencies, ensure you have the following neuroim
 
 **1. Clone the repository**
 ```
-git clone https://github.com/YOUR_USERNAME/Babofet_DWI.git
+git clone https://github.com/MecaLab/Babofet_DWI.git
 cd Babofet_DWI
 ```
 
@@ -61,15 +61,15 @@ pip install nnunetv2
 
 **1. Configure Paths**
 
-Before running, update config/config.sh to match your directory structure:
+Before running, update ```config/config.sh``` to match your directory structure:
 
 ```
 # config/config.sh variables
 export RAWDATA_DIR="/path/to/your/bids/rawdata"
 export DERIVATIVES_DIR="/path/to/your/bids/derivatives"
-export OUTPUT_TMP_DIR="/path/to/working/scratch"
+export OUTPUT_TMP_DIR="/path/to/working/scratch"  # intermediary files
 ```
-**3. HPC Cluster Users (SLURM )**
+**3. HPC Cluster Users (SLURM)**
 
 If you use a module system on an HPC cluster, create a file named config/env_setup.sh and add your module load commands there. The pipeline will automatically load them:
 ```
@@ -83,7 +83,7 @@ module load FSL/0.6.0.7.18
 ## 🏃 Usage
 ### Running Locally
 
-To run the pipeline on a single subject and session, execute the master script:
+To run the pipeline locally or on interactive nodeon a single subject and session, execute the master script:
 ```
 bash 00_run_pipeline.sh <SUBJECT_ID> <SESSION_ID>
 
