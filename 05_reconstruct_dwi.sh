@@ -34,14 +34,13 @@ echo "--- Preparing for final DWI signal reconstruction ---"
 # ==============================================================================
 
 echo "--- Padding DWI stacks and preparing lists ---"
-detected_stacks=( $(ls "${SESSION_RAW_DATA_DIR}"/${SUBJECT_ID}_${SESSION_ID}_*run-*_dwi.nii.gz 2>/dev/null | sort) )
+detected_stacks=( $(ls "${OUTPUT_DIR}"/${SUBJECT_ID}_${SESSION_ID}_*run-*_dwi_eddycorr.nii.gz 2>/dev/null | sort) )
 
 max_slices=0
 STACK_PATHS_TO_PROCESS=()
 for file_path in "${detected_stacks[@]}"; do
-
-    filename=$(basename "$file_path" .nii.gz)  # e.g., sub-01_ses-01_dir-AP_run-01_dwi
-    basename=${filename%_dwi} 
+    filename=$(basename "$file_path" .nii.gz)
+    basename=${filename%_dwi_eddycorr}
 
     stack_path="${OUTPUT_DIR}/${basename}_dwi_eddycorr.nii.gz"
     if [ -f "$stack_path" ]; then

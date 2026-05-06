@@ -17,7 +17,7 @@ source config/config.sh
 #
 # ==============================================================================
 
-detected_stacks=( $(ls "${SESSION_RAW_DATA_DIR}"/${SUBJECT_ID}_${SESSION_ID}_*run-*_dwi.nii.gz 2>/dev/null | sort) )
+detected_stacks=( $(ls "${OUTPUT_DIR}"/${SUBJECT_ID}_${SESSION_ID}_*run-*_final_b1000.nii.gz 2>/dev/null | sort) )
 
 # select the reference stack
 MASK_DIR="${DERIVATIVES_DIR}/svrtk/${SUBJECT_ID}/${SESSION_ID}/dwi"
@@ -42,10 +42,9 @@ echo "Registering all stacks to reference: ${REFERENCE_STACK}"
 
 # --- Loop over all preprocessed acquisitions ---
 for file_path in "${detected_stacks[@]}"; do
-
-    filename=$(basename "$file_path" .nii.gz)  # e.g., sub-01_ses-01_dir-AP_run-01_dwi
-    basename=${filename%_dwi}                  # e.g., sub-01_ses-01_dir-AP_run-01
-
+    filename=$(basename "$file_path" .nii.gz)          # e.g., sub-01_ses-01_dir-AP_run-01_final_b1000
+    basename=${filename%_final_b1000}                  # e.g., sub-01_ses-01_dir-AP_run-01
+    
     echo "Processing registration for: ${basename}"
 
     # --- Path Definitions ---

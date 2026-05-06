@@ -1,7 +1,6 @@
 #!/bin/bash
 #SBATCH -J babofet
 #SBATCH -p interactive
-#SBATCH -w niolon18
 #SBATCH --ntasks-per-node=1
 #SBATCH --mem=250GB 
 #SBATCH -t 150:00:00

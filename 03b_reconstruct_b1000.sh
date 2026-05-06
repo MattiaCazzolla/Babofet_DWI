@@ -29,13 +29,13 @@ echo "--- Preparing for b1000 SVR Reconstruction ---"
 STACK_FILES=()
 DOF_FILES=()
 
-detected_stacks=( $(ls "${SESSION_RAW_DATA_DIR}"/${SUBJECT_ID}_${SESSION_ID}_*run-*_dwi.nii.gz 2>/dev/null | sort) )
+# Look in OUTPUT_DIR for successfully preprocessed b1000 files
+detected_stacks=( $(ls "${OUTPUT_DIR}"/${SUBJECT_ID}_${SESSION_ID}_*run-*_final_b1000.nii.gz 2>/dev/null | sort) )
 
 for file_path in "${detected_stacks[@]}"; do
-
-    filename=$(basename "$file_path" .nii.gz)  # e.g., sub-01_ses-01_dir-AP_run-01_dwi
-    basename=${filename%_dwi}                  # e.g., sub-01_ses-01_dir-AP_run-01
-
+    filename=$(basename "$file_path" .nii.gz)          # e.g., sub-01_ses-01_dir-AP_run-01_final_b1000
+    basename=${filename%_final_b1000}                  # e.g., sub-01_ses-01_dir-AP_run-01
+    
     STACK_IMG_PATH="$OUTPUT_DIR/${basename}_final_b1000.nii.gz"
     STACK_FILES+=("${STACK_IMG_PATH}")
     

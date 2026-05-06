@@ -13,20 +13,12 @@
 # ==============================================================================
 source config/config.sh
 
-detected_stacks=( $(ls "${SESSION_RAW_DATA_DIR}"/${SUBJECT_ID}_${SESSION_ID}_*run-*_dwi.nii.gz 2>/dev/null | sort) )
-
-skip_stacks=() 
+# Look in OUTPUT_DIR for successfully preprocessed b1000 files
+detected_stacks=( $(ls "${OUTPUT_DIR}"/${SUBJECT_ID}_${SESSION_ID}_*run-*_final_b1000.nii.gz 2>/dev/null | sort) )
 
 for file_path in "${detected_stacks[@]}"; do
-
-    filename=$(basename "$file_path" .nii.gz)  # e.g., sub-01_ses-01_dir-AP_run-01_dwi
-    basename=${filename%_dwi}                  # e.g., sub-01_ses-01_dir-AP_run-01
-    basename_fmap=${basename//dir-AP/dir-PA}   # e.g., sub-01_ses-01_dir-PA_run-01
-
-    if [[ " ${skip_stacks[*]} " == *" ${basename} "* ]]; then
-        echo "Skipping preprocessing for: ${basename}"
-        continue
-    fi
+    filename=$(basename "$file_path" .nii.gz)          # e.g., sub-01_ses-01_dir-AP_run-01_final_b1000
+    basename=${filename%_final_b1000}                  # e.g., sub-01_ses-01_dir-AP_run-01
 
     echo "Processing Acquisition: ${basename}"
 

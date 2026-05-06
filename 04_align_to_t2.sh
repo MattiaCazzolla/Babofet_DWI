@@ -70,13 +70,12 @@ convert_xfm \
 # --- Step 3: Compute Transform from ALL Stacks to T2 Template ---
 echo "Calculating final transforms for all stacks to T2 space..."
 
-detected_stacks=( $(ls "${SESSION_RAW_DATA_DIR}"/${SUBJECT_ID}_${SESSION_ID}_*run-*_dwi.nii.gz 2>/dev/null | sort) )
-
+# Look in OUTPUT_DIR for successfully preprocessed b1000 files
+detected_stacks=( $(ls "${OUTPUT_DIR}"/${SUBJECT_ID}_${SESSION_ID}_*run-*_final_b1000.nii.gz 2>/dev/null | sort) )
 
 for file_path in "${detected_stacks[@]}"; do
-
-    filename=$(basename "$file_path" .nii.gz)  # e.g., sub-01_ses-01_dir-AP_run-01_dwi
-    basename=${filename%_dwi} 
+    filename=$(basename "$file_path" .nii.gz)          # e.g., sub-01_ses-01_dir-AP_run-01_final_b1000
+    basename=${filename%_final_b1000}                  # e.g., sub-01_ses-01_dir-AP_run-01
     
     STACK_IMG="${OUTPUT_DIR}/${basename}_final_b1000.nii.gz"
     STACK_TO_T2_MAT="${OUTPUT_DIR}/${basename}_to_T2.mat"

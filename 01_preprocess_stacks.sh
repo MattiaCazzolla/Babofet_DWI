@@ -15,16 +15,14 @@ source config/config.sh
 
 detected_stacks=( $(ls "${SESSION_RAW_DATA_DIR}"/${SUBJECT_ID}_${SESSION_ID}_*run-*_dwi.nii.gz 2>/dev/null | sort) )
 
-skip_stacks=("sub-Aziza_ses-01_dir-AP_run-02" "sub-Aziza_ses-01_dir-AP_run-01" "sub-Aziza_ses-01_dir-AP_run-03" "sub-Aziza_ses-01_dir-AP_run-04" "sub-Aziza_ses-01_dir-AP_run-05") 
-
 for file_path in "${detected_stacks[@]}"; do
 
     filename=$(basename "$file_path" .nii.gz)  # e.g., sub-01_ses-01_dir-AP_run-01_dwi
     basename=${filename%_dwi}                  # e.g., sub-01_ses-01_dir-AP_run-01
     basename_fmap=${basename//dir-AP/dir-PA}   # e.g., sub-01_ses-01_dir-PA_run-01
 
-    if [[ " ${skip_stacks[*]} " == *" ${basename} "* ]]; then
-        echo "Skipping preprocessing for: ${basename}"
+    if [[ " ${EXCLUDE_RUNS[*]} " == *" ${basename} "* ]]; then
+        echo "Skipping excluded run: ${basename}"
         continue
     fi
 

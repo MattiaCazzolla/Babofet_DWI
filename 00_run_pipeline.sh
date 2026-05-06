@@ -37,6 +37,8 @@ export SESSION_FMAP_DATA_DIR="${RAWDATA_DIR}/${SUBJECT_ID}/${SESSION_ID}/fmap"
 export T2W_RECONSTRUCTED="${DERIVATIVES_DIR}/niftymic/${SUBJECT_ID}/${SESSION_ID}/anat/${SUBJECT_ID}_${SESSION_ID}_rec-niftymic_desc-brain_T2w.nii.gz"
 export T2W_RECONSTRUCTED_BG="${DERIVATIVES_DIR}/niftymic/${SUBJECT_ID}/${SESSION_ID}/anat/${SUBJECT_ID}_${SESSION_ID}_rec-niftymic_desc-brainbg_T2w.nii.gz"
 export T2W_RECONSTRUCTED_MASK="${DERIVATIVES_DIR}/niftymic/${SUBJECT_ID}/${SESSION_ID}/anat/${SUBJECT_ID}_${SESSION_ID}_rec-niftymic_desc-brain_mask.nii.gz"
+export T2W_RECONSTRUCTED_TISSUES="${DERIVATIVES_DIR}/longiseg/${SUBJECT_ID}/${SESSION_ID}/anat/${SUBJECT_ID}_${SESSION_ID}_desc-longiseg_dseg.nii.gz"
+
 
 export OUTPUT_DIR=${OUTPUT_TMP_DIR}/${SUBJECT_ID}/${SESSION_ID}
 export DERIVATIVES_OUTPUT_DIR_SVRTK="${DERIVATIVES_DIR}/svrtk/${SUBJECT_ID}/${SESSION_ID}/dwi"
@@ -62,30 +64,30 @@ echo "Session: ${SESSION_ID}"
 echo "Number of stacks: ${stack_count}"
 echo "-----------------------------------------"
 
-#echo "STEP 1: Preprocessing individual DWI stacks..."
-#bash ./01_preprocess_stacks.sh
-#echo "✅ STEP 1 complete."
-#echo "-----------------------------------------"
+echo "STEP 1: Preprocessing individual DWI stacks..."
+bash ./01_preprocess_stacks.sh
+echo "✅ STEP 1 complete."
+echo "-----------------------------------------"
 
-#echo "STEP 1a: Extracting brain mask..."
-#bash ./01a_brain_extraction.sh
-#echo "✅ STEP 1a complete."
-#echo "-----------------------------------------"
+echo "STEP 1a: Extracting brain mask..."
+bash ./01a_brain_extraction.sh
+echo "✅ STEP 1a complete."
+echo "-----------------------------------------"
 
-#echo "STEP 2: Registering stacks to reference..."
-#bash ./02_register_stacks.sh
-#echo "✅ STEP 2 complete."
-#echo "-----------------------------------------"
+echo "STEP 2: Registering stacks to reference..."
+bash ./02_register_stacks.sh
+echo "✅ STEP 2 complete."
+echo "-----------------------------------------"
 
-#echo "STEP 3a: Reconstructing high-resolution b0 volume..."
-#bash ./03a_reconstruct_b0.sh
-#echo "✅ STEP 3a complete."
-#echo "-----------------------------------------"
+echo "STEP 3a: Reconstructing high-resolution b0 volume..."
+bash ./03a_reconstruct_b0.sh
+echo "✅ STEP 3a complete."
+echo "-----------------------------------------"
 
-#echo "STEP 3b: Reconstructing high-resolution b1000 volume..."
-#bash ./03b_reconstruct_b1000.sh
-#echo "✅ STEP 3b complete."
-#echo "-----------------------------------------"
+echo "STEP 3b: Reconstructing high-resolution b1000 volume..."
+bash ./03b_reconstruct_b1000.sh
+echo "✅ STEP 3b complete."
+echo "-----------------------------------------"
 
 echo "STEP 4: Aligning reconstructed volumes to T2 template..."
 bash ./04_align_to_t2.sh
@@ -97,33 +99,19 @@ bash ./05_reconstruct_dwi.sh
 echo "✅ STEP 5 complete."
 echo "-----------------------------------------"
 
-#echo "STEP 6: Fitting tensor and FOD..."
-#bash ./06_fit_tensor.sh
-#echo "✅ STEP 6 complete."
-#echo "-----------------------------------------"
+echo "STEP 6: Fitting tensor and FOD..."
+bash ./06_fit_tensor.sh
+echo "✅ STEP 6 complete."
+echo "-----------------------------------------"
 
-#echo "STEP 8: Propagating masks..."
-#bash ./08_mask_propagation.sh
-#echo "✅ STEP 8 complete."
-#echo "-----------------------------------------"
+echo "STEP 7: Propagating masks..."
+bash ./07_mask_propagation.sh
+echo "✅ STEP 7 complete."
+echo "-----------------------------------------"
 
 #echo "STEP 9: Tractography..."
 #bash ./09_tractography.sh
 #echo "✅ STEP 9 complete."
-#echo "-----------------------------------------"
-
-#module purge
-#module load all
-#module load FSL
-
-#echo "STEP 99: QC plots..."
-#bash ./99_quality_control.sh
-#echo "✅ STEP 99 complete."
-#echo "-----------------------------------------"
-
-#echo "STEP 999: snapshots..."
-#bash ./999_snapshots.sh
-#echo "✅ STEP 99 complete."
 #echo "-----------------------------------------"
 
 echo "========================================="
